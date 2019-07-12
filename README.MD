@@ -1,3 +1,5 @@
+Read this in other languages: [English](README.md), [Russian](README..md)
+
 # Сервис приема заявок на оплату 
   POST /requests/ -> создаёт новую заявку на оплату
 ~~~
