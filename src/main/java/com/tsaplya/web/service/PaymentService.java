@@ -1,5 +1,6 @@
 package com.tsaplya.web.service;
 
+import com.tsaplya.web.model.Request;
 import com.tsaplya.web.model.State;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,13 @@ public class PaymentService {
         this.random = random;
     }
 
-    public State getSate() {
+    public State getRandomSate() {
         return STATES.get(random.nextInt(STATES.size()));
+    }
+
+    public void changeState(List<Request> requests) {
+        requests.stream()
+                .filter(request -> !State.DONE.equals(request.getStatus()))
+                .forEach(request -> request.setStatus(getRandomSate()));
     }
 }

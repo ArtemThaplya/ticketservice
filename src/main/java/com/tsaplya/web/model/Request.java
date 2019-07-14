@@ -1,8 +1,5 @@
 package com.tsaplya.web.model;
 
-import org.springframework.stereotype.Repository;
-
-@Repository
 public class Request {
     private int routeId;
     private int datetime;

@@ -26,7 +26,7 @@ public class PaymentControllerTest {
 
     @Test
     public void test() {
-        when(paymentServiceMock.getSate()).thenReturn(DONE);
+        when(paymentServiceMock.getRandomSate()).thenReturn(DONE);
 
         State paymentState = service.payment();
 

@@ -19,7 +19,7 @@ public class PaymentServiceTest {
     public void whenRandomIsZeroThenReturnFirstState() {
         when(randomMock.nextInt(anyInt())).thenReturn(IN_PROGRESS.ordinal());
 
-        State state = paymentService.getSate();
+        State state = paymentService.getRandomSate();
         assertThat(state, is(IN_PROGRESS));
     }
 }

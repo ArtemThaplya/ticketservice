@@ -15,6 +15,12 @@ public class PaymentController {
 
     @RequestMapping("/payments")
     public State payment() {
-        return paymentService.getSate();
+//        List<Request> requests = requestRepository.findAll();
+//                paymentService.changeState(requests);
+        return paymentService.getRandomSate();
+    }
+
+    public void checkStatusRequest(){
+
     }
 }
