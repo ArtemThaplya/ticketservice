@@ -15,11 +15,11 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(PaymentController.class)
-public class PaymentControllerTest {
+@WebMvcTest(RequestController.class)
+public class RequestControllerTest {
 
     @Autowired
-    private PaymentController service;
+    private RequestController service;
 
     @MockBean
     PaymentService paymentServiceMock;
