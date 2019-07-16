@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class HttpClientConfig {
-    private static final int CONNECT_TIMEOUT = 30000;
-    private static final int REQUEST_TIMEOUT = 30000;
-    private static final int SOCKET_TIMEOUT = 60000;
+    private static final int CONNECT_TIMEOUT = 1000;
+    private static final int REQUEST_TIMEOUT = 1000;
+    private static final int SOCKET_TIMEOUT = 1000;
 
     @Bean
     public CloseableHttpClient httpClient() {

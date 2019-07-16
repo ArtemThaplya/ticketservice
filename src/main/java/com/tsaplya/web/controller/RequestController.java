@@ -1,42 +1,52 @@
 package com.tsaplya.web.controller;
 
-import com.tsaplya.web.dao.ApiRequestDao;
-import com.tsaplya.web.dao.ApiRequestService;
+import com.tsaplya.web.dao.RequestDao;
+import com.tsaplya.web.model.Request;
 import com.tsaplya.web.model.State;
 import com.tsaplya.web.service.PaymentService;
+import com.tsaplya.web.service.StatusUpdaterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @EnableAutoConfiguration
 public class RequestController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StatusUpdaterService.class);
+
     private final PaymentService paymentService;
-    private final ApiRequestService apiRequestService;
-    private final ApiRequestDao apiRequestDao;
 
+    private final RequestDao requestDao;
 
-    public RequestController(PaymentService paymentService, ApiRequestService apiRequestService, ApiRequestDao apiRequestDao) {
+    public RequestController(PaymentService paymentService, RequestDao requestDao, Request request) {
         this.paymentService = paymentService;
-        this.apiRequestService = apiRequestService;
-        this.apiRequestDao = apiRequestDao;
+        this.requestDao = requestDao;
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestController.class);
-    @RequestMapping(value = "/request/{requestId}")
-    public void getStatusByID(@PathVariable(name="requestId")int requestId) {
-        apiRequestDao.getApiRequestById(requestId);
+    @PostMapping(value = "/requests")
+    public void create(@RequestBody Request json){
+        LOGGER.info("Successful create!" + json);
+        requestDao.save(json);
+        requestDao.findAll().forEach(it ->LOGGER.info(it.toString()));
     }
 
+    // Проверка статуса заявки, по id
+    @ResponseBody
+    @RequestMapping("/request/{requestId}/status")
+    public ResponseEntity<Request> get(@PathVariable long requestId){
+        Optional<Request> requests = requestDao.findById(requestId);
+        Request request = requests.get();
+        return new ResponseEntity<>(request, HttpStatus.OK);
+    }
 
-    @RequestMapping("/payments")
+    // Изменение статуса заявки
+    @RequestMapping(value = "/payments")
     public State payment() {
-//        List<Request> requests = requestRepository.findAll();
-//                paymentService.changeState(requests);
         return paymentService.getRandomSate();
     }
 }

@@ -1,52 +1,62 @@
 package com.tsaplya.web.model;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.*;
 
 @Entity
-@Repository
-@Table(name = "Requests")
+@Configuration
+@Table(name = "Request")
 public class Request {
     @Column(name = "routeId")
-    private int routeId;
+    private long routeId;
+
     @Column(name = "datetime")
-    private int datetime;
+    private String datetime;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int requestId;
+    @Column(name = "requestId")
+    private long requestId;
+
     @Column(name = "status")
     private State status;
 
     public Request() {
     }
 
-    public Request(int routeId, int datetime) {
+    @Bean
+    Request createa() {
+        return new Request();
+    }
+
+    public Request(long routeId, String datetime) {
         this.routeId = routeId;
         this.datetime = datetime;
     }
 
-    public int getRouteId() {
+    public long getRouteId() {
         return routeId;
     }
 
-    public void setRouteId(int routeId) {
+    public void setRouteId(long routeId) {
         this.routeId = routeId;
     }
 
-    public int getDatetime() {
+    public String getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(int datetime) {
+    public void setDatetime(String datetime) {
         this.datetime = datetime;
     }
 
-    public int getRequestId() {
+    public long getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(int requestId) {
+    public void setRequestId(long requestId) {
         this.requestId = requestId;
     }
 
