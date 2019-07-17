@@ -5,6 +5,7 @@ import com.tsaplya.web.model.Request;
 import com.tsaplya.web.model.State;
 import com.tsaplya.web.service.PaymentService;
 import com.tsaplya.web.service.StatusUpdaterService;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,6 +22,8 @@ public class RequestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatusUpdaterService.class);
     private final PaymentService paymentService;
     private final RequestDao requestDao;
+    private final JSONObject json = new JSONObject();
+
 
     public RequestController(PaymentService paymentService, RequestDao requestDao) {
         this.paymentService = paymentService;
@@ -29,11 +32,11 @@ public class RequestController {
 
     // Прием заявоки на оплату
     @PostMapping(value = "/requests")
-    public Request create(@Valid @RequestBody Request json) {
-        LOGGER.info("Successful create!" + json);
-        requestDao.save(json);
+    public long create(@Valid @RequestBody Request request) {
+        LOGGER.info("Successful create!" + request);
+        requestDao.save(request);
         requestDao.findAll().forEach(it -> LOGGER.info(it.toString()));
-        return requestDao.findById(json.getRequestId()).get();
+        return requestDao.findById(request.getRequestId()).get().getRequestId();
     }
 
     // Проверка статуса заявки, по id
