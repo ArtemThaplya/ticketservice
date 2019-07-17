@@ -8,8 +8,6 @@ import com.tsaplya.web.service.StatusUpdaterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,12 +22,12 @@ public class RequestController {
     private final PaymentService paymentService;
     private final RequestDao requestDao;
 
-    public RequestController(PaymentService paymentService, RequestDao requestDao, Request request) {
+    public RequestController(PaymentService paymentService, RequestDao requestDao) {
         this.paymentService = paymentService;
         this.requestDao = requestDao;
     }
 
-    // приема заявок на оплату
+    // Прием заявоки на оплату
     @PostMapping(value = "/requests")
     public Request create(@Valid @RequestBody Request json) {
         LOGGER.info("Successful create!" + json);
@@ -41,8 +39,8 @@ public class RequestController {
     // Проверка статуса заявки, по id
     @RequestMapping(value = "/request/{requestId}", method = GET)
     @ResponseBody
-    public Request get(@Valid @PathVariable("requestId") long requestId) {
-        return requestDao.findById(requestId).get();
+    public State get(@Valid @PathVariable("requestId") long requestId) {
+        return requestDao.findById(requestId).get().getStatus();
     }
 
     // Изменение статуса заявки

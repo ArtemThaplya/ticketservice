@@ -17,14 +17,14 @@ public class DataInit implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         long count = requestDao.count();
 
         if (count == 0) {
             Request request = new Request();
             request.setRouteId(1);
             request.setDatetime(String.valueOf(System.currentTimeMillis() / 1000L));
-            //
+
             Request request2 = new Request();
             request2.setRouteId(2);
             request2.setDatetime(String.valueOf(System.currentTimeMillis() / 1000L));
