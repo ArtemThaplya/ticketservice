@@ -1,4 +1,3 @@
-Read this in other languages: [English](README.md), [Russian](README..md)
 
 # Сервис приема заявок на оплату 
   POST /requests/ -> создаёт новую заявку на оплату
@@ -20,7 +19,7 @@ responce:
 requestId - уникальный идентификатор заявки
 
 # Сервис проверки статуса заявки
-2) GET /request/{requestId}/status -> проверка статуса заявки
+2) GET /request/{requestId} -> проверка статуса заявки
 requestId - уникальный идентификатор заявки
 ~~~
 responce:

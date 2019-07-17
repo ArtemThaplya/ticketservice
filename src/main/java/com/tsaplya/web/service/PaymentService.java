@@ -1,13 +1,13 @@
 package com.tsaplya.web.service;
 
 import com.tsaplya.web.model.State;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-@Service
+@Component
 public class PaymentService {
     private static final List<State> STATES = new ArrayList<>(EnumSet.allOf(State.class));
 

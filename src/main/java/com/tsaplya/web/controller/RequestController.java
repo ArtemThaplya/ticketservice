@@ -12,15 +12,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import javax.validation.Valid;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 
 @RestController
 @EnableAutoConfiguration
 public class RequestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatusUpdaterService.class);
-
     private final PaymentService paymentService;
-
     private final RequestDao requestDao;
 
     public RequestController(PaymentService paymentService, RequestDao requestDao, Request request) {
@@ -28,25 +29,32 @@ public class RequestController {
         this.requestDao = requestDao;
     }
 
+    // приема заявок на оплату
     @PostMapping(value = "/requests")
-    public void create(@RequestBody Request json){
+    public Request create(@Valid @RequestBody Request json) {
         LOGGER.info("Successful create!" + json);
         requestDao.save(json);
-        requestDao.findAll().forEach(it ->LOGGER.info(it.toString()));
+        requestDao.findAll().forEach(it -> LOGGER.info(it.toString()));
+        return requestDao.findById(json.getRequestId()).get();
     }
 
     // Проверка статуса заявки, по id
+    @RequestMapping(value = "/request/{requestId}", method = GET)
     @ResponseBody
-    @RequestMapping("/request/{requestId}/status")
-    public ResponseEntity<Request> get(@PathVariable long requestId){
-        Optional<Request> requests = requestDao.findById(requestId);
-        Request request = requests.get();
-        return new ResponseEntity<>(request, HttpStatus.OK);
+    public Request get(@Valid @PathVariable("requestId") long requestId) {
+        return requestDao.findById(requestId).get();
     }
 
     // Изменение статуса заявки
     @RequestMapping(value = "/payments")
     public State payment() {
+        Iterable<Request> all = requestDao.findAll();
+        for (Request request : all) {
+            if (!(request.getStatus() == State.DONE)) {
+                request.setStatus(paymentService.getRandomSate());
+                requestDao.save(request);
+            }
+        }
         return paymentService.getRandomSate();
     }
 }

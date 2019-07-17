@@ -4,14 +4,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Entity
 @Configuration
 @Table(name = "Request")
 public class Request {
+    @NotNull
+    @Positive
     @Column(name = "routeId")
     private long routeId;
 
+    @NotNull
     @Column(name = "datetime")
     private String datetime;
 

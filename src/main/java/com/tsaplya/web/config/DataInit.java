@@ -7,13 +7,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 @Component
 public class DataInit implements ApplicationRunner {
     private RequestDao requestDao;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
     @Autowired
     public DataInit(RequestDao requestDao) {
@@ -27,15 +23,15 @@ public class DataInit implements ApplicationRunner {
         if (count == 0) {
             Request request = new Request();
             request.setRouteId(1);
-            request.setDatetime(sdf.format(new Date()));
+            request.setDatetime(String.valueOf(System.currentTimeMillis() / 1000L));
             //
             Request request2 = new Request();
             request2.setRouteId(2);
-            request2.setDatetime(sdf.format(new Date()));
+            request2.setDatetime(String.valueOf(System.currentTimeMillis() / 1000L));
 
             Request request3 = new Request();
             request3.setRouteId(3);
-            request3.setDatetime(sdf.format(new Date()));
+            request3.setDatetime(String.valueOf(System.currentTimeMillis() / 1000L));
 
             requestDao.save(request);
             requestDao.save(request2);
